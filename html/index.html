@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>AV号与BV号转换工具</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://v3.bootcss.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <link href="https://v3.bootcss.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="https://v3.bootcss.com/assets/js/ie-emulation-modes-warning.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="header clearfix">
+        <h3 class="text-muted">AV号与BV号转换工具</h3>
+      </div>
+      <div class="jumbotron">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">AV</span>
+                <input oninput="value=value.replace(/[^\d]/g,'');av();" type="text" class="form-control" placeholder="请输入AV号" aria-describedby="basic-addon1" name="aid" id="aid">
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">BV</span>
+                <input oninput="bv()" type="text" class="form-control" placeholder="请输入BV号" aria-describedby="basic-addon1" name="bvid" id="bvid">
+            </div>
+        </div>
+      </div>
+
+      <div class="alert alert-info" role="alert">
+        本页面采用<strong><a href="https://www.zhihu.com/people/-._.-" target="_blank">mcfx</a></strong>在知乎上提供的算法，并将其制作成WEB程序。<br />
+        <strong><a href="https://www.zhihu.com/question/381784377/answer/1099438784" target="_blank">原链接</a></strong>点这里，原代码为<strong>Python语言</strong>，在<strong>WTFPL</strong>协议下开源。<br />
+        不保证转换准确性，如需准确转换请使用B站API查询或直接访问原视频链接。<br />
+        本页面UI采用了<strong>Bootstrap</strong>框架，程序由原代码改写而成，以<strong>JavaScript</strong>实现。<br />
+        本页面<strong>JavaScript</strong>代码同样以<strong>WTFPL</strong>开源，请右键查看网页源代码。
+      </div>
+      <footer class="footer">
+        <p>制作：<strong><a href="https://space.bilibili.com/181559021" target="_blank">小李Xiao_li</a></strong>，一名普通的B站用户。</p>
+      </footer>
+    </div>
+    <script>
+        table = 'fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF'
+        tr = {}
+        for (var i = 0; i < 58; i ++) {
+            tr[table[i]] = i;
+            s = [11,10,3,8,4,6];
+            xor = 177451812;
+            add = 8728348608;
+        }
+        function dec(x) {
+            r = 0;
+            for (var i = 0; i < 6; i ++){
+                r += tr [x [s [i]]] * Math.pow (58, i);
+            }
+            return (r - add) ^ xor;
+        }
+        function enc(x) {
+            x = (x ^ xor) + add
+            r = ['B','V','1',' ',' ','4',' ','1',' ','7',' ',' '];
+            for (var i = 0; i < 6; i ++) {
+                r [s [i]] = table [Math.floor (x / (Math.pow (58, i))) % 58];
+            }
+            return r.join('');
+        }
+        function av() {
+            var input = document.getElementsByName('aid')[0].value;
+            if (input == '') {
+                re = '';
+            } else {
+                re = enc(input);
+            }
+			document.getElementById("bvid").value = re;
+        }
+        function bv() {
+            var input = document.getElementsByName('bvid')[0].value;
+            if (input.substring(0,2).toLowerCase() != 'bv') {
+                input = 'BV' + input;
+            }
+            if (input == 'BV') {
+                re = '';
+            } else {
+                re = dec(input);
+            }
+			document.getElementById("aid").value = re;
+        }
+    </script>
+    <script src="https://v3.bootcss.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
